@@ -1,0 +1,33 @@
+#include <vtkSmartPointer.h>
+#include <vtkPoints.h>
+#include <vtkPolyData.h>
+#include <vtkPointData.h>
+#include <vtkCellArray.h>
+#include <vtkXMLPolyDataWriter.h>
+
+int main() {
+    // 创建一个 VTK 点集
+    vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
+
+    // 生成一些示例的三维点数据
+    const int numPoints = 1000000;
+    for (int i = 0; i < numPoints; ++i) {
+        double x = static_cast<double>(rand()) / RAND_MAX;  // 随机 x 坐标
+        double y = static_cast<double>(rand()) / RAND_MAX;  // 随机 y 坐标
+        double z = static_cast<double>(rand()) / RAND_MAX;  // 随机 z 坐标
+
+        points->InsertNextPoint(x, y, z);
+    }
+
+    // 创建一个 VTK 多边形数据
+    vtkSmartPointer<vtkPolyData> polyData = vtkSmartPointer<vtkPolyData>::New();
+    polyData->SetPoints(points);
+
+    // 创建一个写入器并将数据写入.vtk文件
+    vtkSmartPointer<vtkXMLPolyDataWriter> writer = vtkSmartPointer<vtkXMLPolyDataWriter>::New();
+    writer->SetFileName("output.vtk");
+    writer->SetInputData(polyData);
+    writer->Write();
+
+    return 0;
+}
